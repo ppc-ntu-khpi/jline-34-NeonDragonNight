@@ -4,6 +4,9 @@ import com.mybank.domain.Bank;
 import com.mybank.domain.CheckingAccount;
 import com.mybank.domain.Customer;
 import com.mybank.domain.SavingsAccount;
+
+import data.DataSource;
+
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +42,7 @@ public class CLIdemo {
     private String[] commandsList;
 
     public void init() {
-        commandsList = new String[]{"help", "customers", "customer", "exit"};
+        commandsList = new String[]{"help", "customers", "customer", "Save", "Check", "exit"};
     }
 
     public void run() {
@@ -143,10 +146,15 @@ public class CLIdemo {
 
     public static void main(String[] args) {
 
-        Bank.addCustomer("John", "Doe");
-        Bank.addCustomer("Fox", "Mulder");
-        Bank.getCustomer(0).addAccount(new CheckingAccount(2000));
-        Bank.getCustomer(1).addAccount(new SavingsAccount(1000, 3));
+        try {    
+
+            DataSource dataSource = new DataSource("src\\data\\test.dat");
+            dataSource.loadData();
+        
+        } catch (Exception e) {
+            System.out.println("Ошибка при загрузке данных: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         CLIdemo shell = new CLIdemo();
         shell.init();
